@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1424">
+  <meta name="description" content="Giao thông Việt Nam: nền WebGIS, lớp biển báo/cảnh báo/đèn tín hiệu và điều hướng thử nghiệm">
+  <title>Giao thông Việt Nam · WebGIS</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.11.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Trang chủ Giao thông Việt Nam"><span class="brand-icon">↗</span><span><strong>GIAO THÔNG <em>VIỆT NAM</em></strong><small>Nền tảng bản đồ &amp; điều hướng WebGIS</small></span></a>
+      <div class="header-tags"><span class="chip chip-accent">V1 · WEBGIS CORE</span><span id="mode-chip" class="chip demo">DỮ LIỆU MẪU</span></div>
+      <div class="header-actions"><button id="locate" class="btn ghost" title="Vị trí của tôi">◎ <span class="hide-mobile">Vị trí của tôi</span></button><a class="btn ghost" target="_blank" rel="noopener noreferrer" href="https://github.com/xulytiengviet/giaothong">GitHub ↗</a></div>
+    </header>
+    <main class="workspace">
+      <aside class="sidebar scroll">
+        <section class="intro">
+          <div class="eyebrow">TRUNG TÂM BẢN ĐỒ</div>
+          <h1>Giao thông<br><span>thông minh</span></h1>
+          <p>Nền dữ liệu thống nhất cho GIS, WebGIS và nghiên cứu điều hướng ô tô Việt Nam.</p>
+          <div class="caution">⚠ Bản thử nghiệm. Không dùng để quyết định khi đang lái xe.</div>
+        </section>
+        <section class="section">
+          <div class="section-head"><h2>Lớp bản đồ</h2><button id="toggle-all" class="link-btn">Ẩn tất cả</button></div>
+          <div id="layer-list" class="layer-list" aria-label="Bật tắt lớp dữ liệu"></div>
+        </section>
+        <section class="section compact">
+          <h2>Nguồn dữ liệu</h2>
+          <div class="source-row"><div><strong>Minh họa</strong><small>Điểm thử nghiệm, không phải hiện trường</small></div><label class="switch"><input id="show-demo" type="checkbox" checked><span></span></label></div>
+          <button id="load-osm" class="btn full secondary">◎ Nạp biển báo &amp; đèn từ OSM</button>
+          <small class="muted">Chỉ nạp các điểm được cộng đồng OSM gắn thẻ trong khung nhìn hiện tại. Không có trạng thái đèn trực tiếp.</small>
+          <div class="button-row"><label class="btn secondary file-btn">↑ Nhập GeoJSON<input id="import-file" type="file" accept=".json,.geojson,application/geo+json" hidden></label><button id="export-file" class="btn secondary">↓ Xuất GeoJSON</button></div>
+        </section>
+        <section class="section compact">
+          <h2>Nguồn thời gian thực <span class="badge badge-idle" id="live-badge">Chưa kết nối</span></h2>
+          <label class="field-label" for="api-url">URL API có quyền truy cập</label>
+          <input id="api-url" type="url" placeholder="https://your-traffic-api.example" autocomplete="url">
+          <div class="button-row"><button id="connect-live" class="btn primary">⟳ Kết nối dữ liệu trực tiếp</button><button id="disconnect-live" class="btn secondary" disabled>Ngắt</button></div>
+          <small class="muted" id="feed-time">Chưa nhận dữ liệu từ nguồn thực.</small>
+        </section>
+        <footer class="side-foot">© 2026 Long Ngo · MapLibre · OpenFreeMap · © OpenStreetMap contributors</footer>
+      </aside>
+      <div class="map-area">
+        <div id="map" role="application" aria-label="Bản đồ giao thông tương tác Việt Nam"></div>
+        <div class="map-top">
+          <div class="map-search"><span>⌕</span><input id="coord-search" type="search" placeholder="Tìm tọa độ: 10.7769, 106.7009" aria-label="Tìm bằng tọa độ"><button id="coord-go" title="Đến tọa độ">Đi đến</button></div>
+          <div id="map-status" class="status-card">● Nền bản đồ đang khởi tạo…</div>
+        </div>
+        <div class="map-bottom">
+          <div class="legend"><span><i class="dot sign"></i> Biển báo</span><span><i class="dot signal"></i> Đèn tín hiệu</span><span><i class="dot warning"></i> Cảnh báo</span><span><i class="dot traffic"></i> Giao thông</span></div>
+          <div class="map-hint" id="map-hint">Nhấn lên đối tượng để xem nguồn và thời điểm cập nhật.</div>
+        </div>
+      </div>
+      <aside class="inspector scroll">
+        <section class="panel dark-card">
+          <div class="eyebrow">ĐIỀU HƯỚNG THỬ NGHIỆM</div>
+          <h2>Lập tuyến ô tô</h2>
+          <p>Chọn điểm đầu và điểm đến trực tiếp trên bản đồ.</p>
+          <div class="route-field"><span class="route-dot start"></span><div><small>ĐIỂM XUẤT PHÁT</small><strong id="start-label">Chưa chọn</strong></div><button id="pick-start" class="btn mini">Chọn</button></div>
+          <div class="route-line"></div>
+          <div class="route-field"><span class="route-dot end"></span><div><small>ĐIỂM ĐẾN</small><strong id="end-label">Chưa chọn</strong></div><button id="pick-end" class="btn mini">Chọn</button></div>
+          <div class="button-row route-actions"><button id="route" class="btn primary" disabled>↗ Tìm đường</button><button id="clear-route" class="btn secondary">Xóa</button></div>
+          <div id="route-result" class="route-result" aria-live="polite">Định tuyến thử nghiệm bằng OSRM. Chưa xét ùn tắc, đóng đường hoặc pha đèn trực tiếp.</div>
+        </section>
+        <section class="panel metrics">
+          <div class="section-head"><h2>Tổng quan lớp dữ liệu</h2><span id="clock" class="clock"></span></div>
+          <div class="metric-grid"><div><strong id="count-total">0</strong><small>ĐỐI TƯỢNG</small></div><div><strong id="count-warnings">0</strong><small>CẢNH BÁO</small></div><div><strong id="count-signals">0</strong><small>ĐÈN TÍN HIỆU</small></div><div><strong id="count-signs">0</strong><small>BIỂN BÁO</small></div></div>
+          <div class="note">Bộ đếm gồm các lớp đang hiển thị, phân biệt dữ liệu mẫu, OSM và dữ liệu nguồn thật.</div>
+        </section>
+        <section class="panel">
+          <div class="section-head"><h2>Thông tin đối tượng</h2><span class="tiny">GeoJSON · WGS84</span></div>
+          <div id="feature-details" class="empty-details">Nhấn vào một đối tượng trên bản đồ để xem chi tiết, độ tin cậy và dấu thời gian.</div>
+        </section>
+        <section class="panel">
+          <h2>Trạng thái hệ thống</h2>
+          <ul class="system-list"><li><span class="ok">●</span> Bản đồ vector <strong>OpenFreeMap</strong></li><li><span class="ok">●</span> Engine hiển thị <strong>MapLibre</strong></li><li><span class="dim">●</span> Pha đèn trực tiếp <strong>Chờ tích hợp</strong></li><li><span class="dim">●</span> Camera/ùn tắc trực tiếp <strong>Chờ API</strong></li></ul>
+        </section>
+      </aside>
+    </main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
