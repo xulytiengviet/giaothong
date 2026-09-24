@@ -1,0 +1,8 @@
+{
+  "name":"giaothong-vietnam-webgis",
+  "version":"0.1.0",
+  "private":true,
+  "type":"module",
+  "description":"Static-first Vietnam traffic WebGIS, optional authenticated SSE gateway",
+  "scripts":{"start":"node server/index.mjs","test":"node --test tests/*.test.mjs","check":"node --check src/main.js && node --check src/config.js && node --check server/index.mjs"}
+}
