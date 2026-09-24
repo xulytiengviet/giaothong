@@ -1,0 +1,137 @@
+{
+  "type": "FeatureCollection",
+  "name": "SAMPLE ONLY — NOT REAL TRAFFIC",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "demo-sign-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.699,
+          10.78
+        ]
+      },
+      "properties": {
+        "layer": "sign",
+        "name": "Biển hạn chế tốc độ (MẪU)",
+        "sign_code": "P.127",
+        "speed_limit": 50,
+        "source": "Dữ liệu giả lập",
+        "is_demo": true,
+        "description": "Điểm minh họa giao diện; không xác nhận biển báo tồn tại tại vị trí này.",
+        "updated_at": "2026-09-24T00:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "demo-signal-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.705,
+          10.777
+        ]
+      },
+      "properties": {
+        "layer": "signal",
+        "name": "Nút đèn tín hiệu (MẪU)",
+        "state": "unknown",
+        "source": "Dữ liệu giả lập",
+        "is_demo": true,
+        "description": "Vị trí minh họa. Không có pha đèn trực tiếp.",
+        "updated_at": "2026-09-24T00:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "demo-warning-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.692,
+          10.771
+        ]
+      },
+      "properties": {
+        "layer": "warning",
+        "name": "Khu vực ùn tắc (MẪU)",
+        "severity": "medium",
+        "source": "Dữ liệu giả lập",
+        "is_demo": true,
+        "description": "Chỉ thử nghiệm trình hiển thị cảnh báo, không phản ánh giao thông thực tế.",
+        "updated_at": "2026-09-24T00:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "demo-camera-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.71,
+          10.782
+        ]
+      },
+      "properties": {
+        "layer": "camera",
+        "name": "Camera giao thông (MẪU)",
+        "source": "Dữ liệu giả lập",
+        "is_demo": true,
+        "description": "Không có video thực, URL hoặc camera vật lý ở vị trí này.",
+        "updated_at": "2026-09-24T00:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "demo-flood-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.684,
+          10.765
+        ]
+      },
+      "properties": {
+        "layer": "flood",
+        "name": "Ngập nước (MẪU)",
+        "severity": "high",
+        "source": "Dữ liệu giả lập",
+        "is_demo": true,
+        "description": "Cảnh báo giả lập cho mục đích kiểm thử.",
+        "updated_at": "2026-09-24T00:00:00Z"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "demo-traffic-01",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            106.694,
+            10.781
+          ],
+          [
+            106.701,
+            10.778
+          ],
+          [
+            106.709,
+            10.775
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "traffic",
+        "name": "Đoạn đường lưu lượng cao (MẪU)",
+        "severity": "medium",
+        "speed_kmh": 15,
+        "source": "Dữ liệu giả lập",
+        "is_demo": true,
+        "description": "Đoạn vẽ giả lập, không phải số đo lưu lượng.",
+        "updated_at": "2026-09-24T00:00:00Z"
+      }
+    }
+  ]
+}
